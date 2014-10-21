@@ -1,0 +1,55 @@
+#!/bin/bash
+
+
+SSH_OPTS='-o StrictHostKeyChecking=no -oNumberOfPasswordPrompts=0 -n'
+
+declare -a nodes=($(awk -F":" '{ print $1 }' cluster.roles ))
+
+
+## Check the Prerequisites
+#1. Check the Keyless SSH among the nodes
+	keyless=1
+	for node in ${nodes[@]}
+	do
+		ssh ${SSH_OPTS} $node echo hello > /dev/null 2>&1 || keyless=0
+	done
+	if [ $keyless -eq 0 ] ; then
+		echo "Keyless ssh needs to be enabled between the nodes ! "
+		exit 1;
+	else 
+		echo "Keyless ssh is be enabled between the nodes ! "
+	fi
+
+#2.Check JAVA_HOME
+# For CDH install Oracle Java need to be installed and JAVA_HOME need to be set
+
+	javahome_path=$(grep JAVA_HOME cluster.properties | awk -F"=" '{ print $2 }') 
+
+	javahome=1
+	for node in ${nodes[@]}
+	do
+		ssh ${SSH_OPTS} $node "ls ${javahome_path}/bin/java  " > /dev/null 2>&1 || javahome=0
+	done
+	if [ $javahome -eq 0 ] ; then
+		echo "CDH requires Oracel Java to be installed and JAVA_HOME need to be defined on all nodes! "
+		exit 1;
+	else 
+		echo "Found java at specified JAVA_HOME locations !"	
+	fi
+
+
+#3. Check for unused disks for datanodes
+
+	disksavailable=1
+	for node in ${nodes[@]}
+	do
+		ssh ${SSH_OPTS} $node "ls ${javahome_path}/bin/java  " > /dev/null 2>&1 || javahome=0
+	done
+	if [ $javahome -eq 0 ] ; then
+		echo "CDH requires Oracel Java to be installed and JAVA_HOME need to be defined on all nodes! "
+		exit 1;
+	else 
+		echo "Found java at specified JAVA_HOME locations !"	
+	fi
+
+

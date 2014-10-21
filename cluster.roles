@@ -1,0 +1,2 @@
+10.10.100.223:hdfs-namenode:hdfs-datanode:yarn-resourcemanager:yarn-nodemanager:mapreduce:mapreduce-historyserver:yarn-proxyserver
+10.10.100.224:hdfs-datanode:yarn-nodemanager:mapreduce

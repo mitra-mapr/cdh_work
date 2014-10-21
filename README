@@ -1,0 +1,16 @@
+
+cluster.roles : Edit this file to assign the roles for the nodes in the cluster.
+Here is an exaple:
+	10.10.100.223:hdfs-namenode:hdfs-datanode:yarn-resourcemanager:yarn-nodemanager:mapreduce:mapreduce-historyserver:yarn-proxyserver
+	10.10.100.224:hdfs-datanode:yarn-nodemanager:mapreduce
+
+Edit the IP addresses and the roles as per the requirement.
+
+cluster.properties: This file serves as template for all the cluster configuration files.
+Based on this file all the config files under /etc/hadoop/conf/ are created.
+Modify the JAVA_HOME in this script as per the loaction on the servers.
+
+
+cluster_script.sh - This script installs and configures the CDH cluster. Execute as root user.
+	Pre-reqs for this script: password-less ssh is established for the user root, Java is installed at the specified JAVA_HOME location.
+To install and set-up the CDH cluster: ./cluster_script.sh
